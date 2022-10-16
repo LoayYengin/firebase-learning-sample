@@ -3,9 +3,10 @@ import { getAuth, signInWithPopup, GithubAuthProvider } from "https://www.gstati
 const auth = getAuth();
 
 const providerGithub = new GithubAuthProvider();
-//const provider
+//const providerOther = new OtherAuthProvider();
 
 var githubButton = document.getElementById("github-login-button");
+//var otherButtom = 
 
 githubButton.addEventListener("click", function() {signInPopup(auth, providerGithub)});
 
