@@ -1,9 +1,7 @@
-import { GithubAuthProvider } from "firebase/auth";
-const provider = new GithubAuthProvider()
-
 import { getAuth, signInWithPopup, GithubAuthProvider } from "firebase/auth";
-
 const auth = getAuth();
+const providerGithub = new GithubAuthProvider();
+
 signInWithPopup(auth, provider)
   .then((result) => {
     // This gives you a GitHub Access Token. You can use it to access the GitHub API.
@@ -12,6 +10,7 @@ signInWithPopup(auth, provider)
 
     // The signed-in user info.
     const user = result.user;
+    console.log(user)
     // ...
   }).catch((error) => {
     // Handle Errors here.
@@ -25,5 +24,5 @@ signInWithPopup(auth, provider)
   });
 
 function ButtonClick() {
-    document.getElementById("coolButton").innerHTML = "You got a nice mouse cursor";
-}
+    signInWithPopup(auth, providerGithub);
+};
