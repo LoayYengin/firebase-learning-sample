@@ -1,35 +1,29 @@
+import { GithubAuthProvider } from "firebase/auth";
+const provider = new GithubAuthProvider()
+
+import { getAuth, signInWithPopup, GithubAuthProvider } from "firebase/auth";
+
+const auth = getAuth();
+signInWithPopup(auth, provider)
+  .then((result) => {
+    // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+    const credential = GithubAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+
+    // The signed-in user info.
+    const user = result.user;
+    // ...
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GithubAuthProvider.credentialFromError(error);
+    // ...
+  });
+
 function ButtonClick() {
     document.getElementById("coolButton").innerHTML = "You got a nice mouse cursor";
-}
-
-function loginGithub() {
-    var provider = new firebase.auth.GithubAuthProvider();
-    
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then((result) => {
-        /** @type {firebase.auth.OAuthCredential} */
-        var credential = result.credential;
-    
-        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-        var token = credential.accessToken;
-    
-        // The signed-in user info.
-        var user = result.user;
-        
-        document.getElementById("coolButton").innerHTML = user;
-        console.log(user);
-    
-        // ...
-      }).catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-      });
 }
