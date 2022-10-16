@@ -3,7 +3,8 @@ import { getAuth, signInWithPopup, GithubAuthProvider } from "https://www.gstati
 const auth = getAuth();
 const providerGithub = new GithubAuthProvider();
 
-function ButtonClick() {
+var githubButton = document.getElementById("github-login-button");
+githubButton.addEventListener("click", function() {
     signInWithPopup(auth, providerGithub)
     .then((result) => {
         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
@@ -24,6 +25,4 @@ function ButtonClick() {
         const credential = GithubAuthProvider.credentialFromError(error);
         // ...
     });
-};
-
-export {ButtonClick}
+})
