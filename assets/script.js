@@ -3,12 +3,13 @@ import { getAuth, signInWithPopup, GithubAuthProvider } from "https://www.gstati
 const auth = getAuth();
 
 const providerGithub = new GithubAuthProvider();
-//const providerOther = new OtherAuthProvider();
+//const providerOTHER = new OTHERAuthProvider();
 
 var githubButton = document.getElementById("github-login-button");
-//var otherButtom = 
+//var OTHERButton = ...
 
 githubButton.addEventListener("click", function() {signInPopup(auth, providerGithub)});
+//OTHERButton.addEventListener("click", function() {signInPopup(auth, providerOTHER)});
 
 
 function signInPopup(authorization, provider) {
