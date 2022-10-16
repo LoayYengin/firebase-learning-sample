@@ -25,3 +25,5 @@ function ButtonClick() {
         // ...
     });
 };
+
+export {ButtonClick}
