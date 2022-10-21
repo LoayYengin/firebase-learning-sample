@@ -1,8 +1,47 @@
 
-//all contains all the broken code(in order) so it doesnt execute on load
+// // Initialize the FirebaseUI Widget using Firebase.
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+var uiConfig = {
+    callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            // User successfully signed in.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
+            return true;
+        },
+        uiShown: function() {
+            // The widget is rendered.
+            // Hide the loader.
+            document.getElementById('loader').style.display = 'none';
+        }
+    },
+    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+    signInFlow: 'popup',
+    signInSuccessUrl: '<url-to-redirect-to-on-success>',
+    signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+        firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.PhoneAuthProvider.PROVIDER_ID
+    ],
+    // Terms of service url.
+    tosUrl: '<your-tos-url>',
+    // Privacy policy url.
+    privacyPolicyUrl: '<your-privacy-policy-url>'
+};
+
+// The start method will wait until the DOM is loaded.
+ui.start('#firebaseui-auth-container', uiConfig);
+
+// all() contains all the broken code(in order) so it doesnt execute on load
 function all() {
-    // Initialize the FirebaseUI Widget using Firebase.
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+    // // Initialize the FirebaseUI Widget using Firebase.
+    // var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
     ui.start('#firebaseui-auth-container', {
         signInOptions: [
@@ -46,7 +85,6 @@ function all() {
     });
 
 
-
     // Confirm the link is a sign-in with email link.
     if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
         // Additional state parameters can also be passed via URL.
@@ -77,7 +115,28 @@ function all() {
         });
     }
 
-
+    // After asking the user for their email.
+    var email = window.prompt('Please provide your email');
+    firebase.auth().fetchSignInMethodsForEmail(email)
+        .then((signInMethods) => {
+            // This returns the same array as fetchProvidersForEmail but for email
+            // provider identified by 'password' string, signInMethods would contain 2
+            // different strings:
+            // 'emailLink' if the user previously signed in with an email/link
+            // 'password' if the user has a password.
+            // A user could have both.
+            if (signInMethods.indexOf(
+                firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) != -1) {
+                // User can sign in with email/password.
+            }
+            if (signInMethods.indexOf(
+                firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) != -1) {
+                // User can sign in with email/link.
+            }
+        })
+        .catch((error) => {
+            // Some error occurred, you can inspect the code: error.code
+        });
 
 
     //to sign out
