@@ -1,6 +1,9 @@
 
-// // Initialize the FirebaseUI Widget using Firebase.
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js"
+        
+//var ui = new firebaseui.auth.AuthUI(firebase.auth()); //OUTDATED INSTRUCTIONS IN Firebase UI "firebase.auth()" -> "getAuth"
+var ui = new firebaseui.auth.AuthUI(getAuth());
+
 
 var uiConfig = {
     callbacks: {
@@ -36,6 +39,13 @@ var uiConfig = {
 
 // The start method will wait until the DOM is loaded.
 ui.start('#firebaseui-auth-container', uiConfig);
+
+
+
+
+
+
+
 
 // all() contains all the broken code(in order) so it doesnt execute on load
 function all() {
