@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--Firebase Imports:-->
+     <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+     
+    <title>Firebase UI Sample</title>
+</head>
+<body>
+    <h1>
+        Firebase Auth (v9):
+    </h1>
+    <p id="LoginType">[Login Type]</p>
+    <p id="UserInfo">[User Info]</p>
+    <p id="ErrorMessage">[Error Message]</p>
+
+    <button id="github-login-button">Github</button> <br>
+    <button id="google-login-button">Google</button> <br>
+    <button id="twitter-login-button">Twitter</button> <br>
+    <button id="anonymous-login-button">Anonymous</button> <br>
+
+    <br>
+    <button id="back">Back</button>
+
+    <!--
+        //=== Script Imports: ===\\
+        1) Firebase UI 
+        2) script.js
+    -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCCGip2XrBD20pZYLGEPRwbQefYytJQeOU",
+          authDomain: "fir-learning-sample.firebaseapp.com",
+          projectId: "fir-learning-sample",
+          storageBucket: "fir-learning-sample.appspot.com",
+          messagingSenderId: "1063963052621",
+          appId: "1:1063963052621:web:3923e13c8f203cab0dea04"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+      </script>
+
+    <script type="text/javascript">
+        document.getElementById("back").onclick = function () {
+            location.href = "../index.html";
+        };
+    </script>
+
+    <script src="./script.js" type="module"> </script>
+    
+</body>
+</html>
+
+<!-- 
+Repo at: https://github.com/LoayYengin/firebase-learning-sample
+Website at: https://loayyengin.github.io/firebase-learning-sample/
+Callback at: https://loayyengin.github.io/firebase-learning-sample/assets/callback.html
+
+1) https://github.com/firebase/quickstart-js 
+2) https://firebase.google.com/docs/web/setup
+3) https://firebase.google.com/docs/auth/web/start 
+4) https://firebase.google.com/docs/web/learn-more
+5) https://github.com/firebase/firebaseui-web#installation
+6) https://firebase.google.com/docs/hosting/test-preview-deploy
+-->
