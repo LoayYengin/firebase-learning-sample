@@ -27,17 +27,20 @@
             messagingSenderId: "162693908392",
             appId: "1:162693908392:web:d668d741cd177e2172bf9d"
             };
+
             // Initialize Firebase
             const app = initializeApp(firebaseConfig);
+            export { app };
         </script>
 
-        <script src="./script.js" type="module"> </script>
+        <!--<script src="./script.js" type="module"> </script>-->
         <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
         <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
-        <script type="text/javascript">
+        <script type="module">
+            import { getAuth } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js"
             // FirebaseUI config.
             var uiConfig = {
-                signInSuccessUrl: '<url-to-redirect-to-on-success>',
+                signInSuccessUrl: './signedIn.html',
                 signInOptions: [
                 // Leave the lines as is for the providers you want to offer your users.
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -59,7 +62,7 @@
             };
 
             // Initialize the FirebaseUI Widget using Firebase.
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
+            var ui = new firebaseui.auth.AuthUI(getAuth());
             // The start method will wait until the DOM is loaded.
             ui.start('#firebaseui-auth-container', uiConfig);
         </script>
