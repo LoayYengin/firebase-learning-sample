@@ -1,158 +1,64 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyA51MI8bkk9w3XLyrLgk486FOT6KCTsCPs",
+    authDomain: "fir-ui-prototype.firebaseapp.com",
+    projectId: "fir-ui-prototype",
+    storageBucket: "fir-ui-prototype.appspot.com",
+    messagingSenderId: "162693908392",
+    appId: "1:162693908392:web:d668d741cd177e2172bf9d"
+  };
 
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js"
+firebase.initializeApp(firebaseConfig)
+
+function initApp() {  
+//console.log("im in initApp()");
+    firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var uid = user.uid;
+        var phoneNumber = user.phoneNumber;
+        var providerData = user.providerData;
+        user.getIdToken().then(function(accessToken) {
+        document.getElementById('sign-in-status').textContent = user.displayName + ' is in the matrix.';
+        document.getElementById('sign-in').textContent = 'Sign out';
         
-//var ui = new firebaseui.auth.AuthUI(firebase.auth()); //OUTDATED INSTRUCTIONS IN Firebase UI "firebase.auth()" -> "getAuth"
-var ui = new firebaseui.auth.AuthUI(getAuth());
-
-
-var uiConfig = {
-    callbacks: {
-        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-            // User successfully signed in.
-            // Return type determines whether we continue the redirect automatically
-            // or whether we leave that to developer to handle.
-            return true;
-        },
-        uiShown: function() {
-            // The widget is rendered.
-            // Hide the loader.
-            document.getElementById('loader').style.display = 'none';
-        }
-    },
-    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-    signInFlow: 'popup',
-    signInSuccessUrl: '<url-to-redirect-to-on-success>',
-    signInOptions: [
-        // Leave the lines as is for the providers you want to offer your users.
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        firebase.auth.GithubAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        firebase.auth.PhoneAuthProvider.PROVIDER_ID
-    ],
-    // Terms of service url.
-    tosUrl: '<your-tos-url>',
-    // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
-};
-
-// The start method will wait until the DOM is loaded.
-ui.start('#firebaseui-auth-container', uiConfig);
-
-
-
-
-
-
-
-
-// all() contains all the broken code(in order) so it doesnt execute on load
-function all() {
-
-    // // Initialize the FirebaseUI Widget using Firebase.
-    // var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-    ui.start('#firebaseui-auth-container', {
-        signInOptions: [
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-        ],
-        // Other config options...
-    });
-    
-
-    var actionCodeSettings = {
-        // URL you want to redirect back to. The domain (www.example.com) for this
-        // URL must be in the authorized domains list in the Firebase Console.
-        url: 'https://www.example.com/finishSignUp?cartId=1234',
-        // This must be true.
-        handleCodeInApp: true,
-        iOS: {
-        bundleId: 'com.example.ios'
-        },
-        android: {
-        packageName: 'com.example.android',
-        installApp: true,
-        minimumVersion: '12'
-        },
-        dynamicLinkDomain: 'example.page.link'
-    };
-
-
-    //TODO: get user email for this function
-    firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
-    .then(() => {
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
-        window.localStorage.setItem('emailForSignIn', email);
-        // ...
-    })
-    .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-    });
-
-
-    // Confirm the link is a sign-in with email link.
-    if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-        // Additional state parameters can also be passed via URL.
-        // This can be used to continue the user's intended action before triggering
-        // the sign-in operation.
-        // Get the email if available. This should be available if the user completes
-        // the flow on the same device where they started it.
-        var email = window.localStorage.getItem('emailForSignIn');
-        if (!email) {
-        // User opened the link on a different device. To prevent session fixation
-        // attacks, ask the user to provide the associated email again. For example:
-        email = window.prompt('Please provide your email for confirmation');
-        }
-        // The client SDK will parse the code from the link for you.
-        firebase.auth().signInWithEmailLink(email, window.location.href)
-        .then((result) => {
-            // Clear email from storage.
-            window.localStorage.removeItem('emailForSignIn');
-            // You can access the new user via result.user
-            // Additional user info profile not available via:
-            // result.additionalUserInfo.profile == null
-            // You can check if the user is new or existing:
-            // result.additionalUserInfo.isNewUser
-        })
-        .catch((error) => {
-            // Some error occurred, you can inspect the code: error.code
-            // Common errors could be invalid email and invalid or expired OTPs.
+        document.getElementById('account-details').textContent = JSON.stringify({
+            displayName: displayName,
+            email: email,
+            emailVerified: emailVerified,
+            phoneNumber: phoneNumber,
+            photoURL: photoURL,
+            uid: uid,
+            accessToken: accessToken,
+            providerData: providerData
+        }, null, '  ');
         });
+    } else {
+        // User is signed out.
+        console.log("User is null, returning to login page.");
+        location.href = "./main.html";
     }
+    }, function(error) {
+    console.log(error);
+    });
+  };
 
-    // After asking the user for their email.
-    var email = window.prompt('Please provide your email');
-    firebase.auth().fetchSignInMethodsForEmail(email)
-        .then((signInMethods) => {
-            // This returns the same array as fetchProvidersForEmail but for email
-            // provider identified by 'password' string, signInMethods would contain 2
-            // different strings:
-            // 'emailLink' if the user previously signed in with an email/link
-            // 'password' if the user has a password.
-            // A user could have both.
-            if (signInMethods.indexOf(
-                firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) != -1) {
-                // User can sign in with email/password.
-            }
-            if (signInMethods.indexOf(
-                firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD) != -1) {
-                // User can sign in with email/link.
-            }
-        })
-        .catch((error) => {
-            // Some error occurred, you can inspect the code: error.code
+initApp();
+
+window.onload = init
+function init() {
+    console.log(document.getElementById('sign-in'))
+    document.getElementById('sign-in').addEventListener("click", function() {
+        firebase.auth().signOut().then(() => {
+            // Sign-out successful.
+            location.href = "./main.html";
+            console.log("User has signed out, returning to login page.")
+        }).catch((error) => {
+            // An error happened.
+            console.log("error:" +error);
         });
-
-
-    //to sign out
-    firebase.auth().signOut().then(() => {
-        // Sign-out successful.
-    }).catch((error) => {
-        // An error happened.
     });
 }
