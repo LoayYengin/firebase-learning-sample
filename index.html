@@ -12,12 +12,16 @@
         Firebase Prototypes
     </h1>
     
-    <button id="ui" class="float-left submit-button">Firebase UI (v8)</button> <br>
+    <button id="ui8" class="float-left submit-button">Firebase UI (v8)</button> <br>
+    <button id="ui9" class="float-left submit-button">Firebase UI (v9 - WIP)</button> <br>
     <button id="auth" class="float-left submit-button">Firebase Auth (v9)</button> <br>
 
     <script type="text/javascript">
-        document.getElementById("ui").onclick = function () {
+        document.getElementById("ui8").onclick = function () {
             location.href = "./v8_webpage/main.html";
+        };
+        document.getElementById("ui9").onclick = function () {
+            location.href = "./v9_wip/main.html";
         };
         document.getElementById("auth").onclick = function () {
             location.href = "./v9_webpage/main.html";
